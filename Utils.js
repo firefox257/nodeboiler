@@ -2,7 +2,7 @@
 
 
 
-exports.trackUpdate function(d)
+ function trackUpdate(d)
 {
   
   var s=`{_d:d,update:{_id:d._id},`;
@@ -29,3 +29,6 @@ exports.trackUpdate function(d)
   
   
 }
+
+module.exports={trackObject}
+

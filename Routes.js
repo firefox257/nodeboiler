@@ -26,8 +26,9 @@ var routes=(function()
   };
   
 })();
-for(var i in routes)
-exports[i]=routes[i];
+
+
+module.exports={routes}
 
 
 
