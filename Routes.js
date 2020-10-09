@@ -1,3 +1,5 @@
+var{Exception, HtmlException}=require('./Exception');
+
 
 var routes=(function()
 {
@@ -63,14 +65,17 @@ var routes=(function()
        {
          if(!r[i])
          {
-           this.send(req, res,"/error/404");
-           return;
+           //this.send(req, res,"/error/404");
+           //return;
+           
+           throw HtmlException.notfound();
          }
          r=r[i];
        }
        
        
       }
+      
       
       if(args.length>0)
       {
@@ -84,7 +89,6 @@ var routes=(function()
         r['__func'](req, res, data);
         `);
       }
-      
       
     }
     

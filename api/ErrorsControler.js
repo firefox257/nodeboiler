@@ -3,7 +3,7 @@ var mime = require('mime-types');
 var fs=require("fs");
 var {routes}=require("../Routes");
 
-function sentHtmlPage(req, res, path, type)
+function sendtHtmlPage(req, res, path, type)
 {
    fs.stat(path, function(err, stat)
      {
@@ -17,15 +17,19 @@ function sentHtmlPage(req, res, path, type)
 }
 
 
+routes.set("/error/400", function(req,res)
+{
+  sendtHtmlPage(req,res,"www/errors/400.html",400);
+});
+
 routes.set("/error/404", function(req,res)
 {
-  sentHtmlPage(req,res,"www/errors/404.html",404);
+  sendtHtmlPage(req,res,"www/errors/404.html",404);
 });
 
 
 routes.set("/error/500", function(req,res)
 {
-  sentHtmlPage(req,res,"www/errors/500.html",500);
+  sendtHtmlPage(req,res,"www/errors/500.html",500);
 });
 
- //*/

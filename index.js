@@ -3,6 +3,7 @@
 var http = require('http');
 var fs = require('fs');
 var mime = require('mime-types');
+var {Exception, HtmlException} = require('./Exception');
 var {config}=require("./Configuration");
 var {routes}=require("./Routes");
 require("./api/RegisterRoutes");
@@ -13,6 +14,7 @@ http.createServer(function (req, res)
 {
   
   var url = decodeURI(req.url.toString());
+  //console.log("url:"+url);
  
   if(url.startsWith("/api"))
   {
@@ -20,9 +22,17 @@ http.createServer(function (req, res)
     {
       routes.send(req, res, url);
     }
-    catch(err)
+    catch(ex)
     {
+      console.log(ex);
+      if(!ex.code)
+      {
         routes.send(req,res,"/error/500");
+      }
+      else
+      {
+        routes.send(req,res,`/error/${ex.code}`);
+      }
     }
   }
   else

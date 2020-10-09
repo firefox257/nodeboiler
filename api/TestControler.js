@@ -1,5 +1,6 @@
 
 var db=require("nedb");
+var {Exception, HtmlException} =require(`../Exception`);
 var {routes}=require("../Routes");
 
 
@@ -7,17 +8,21 @@ var {routes}=require("../Routes");
 
 
 
-routes.set("/api/test", function(req,res)
+routes.set("/api/test/", function(req,res)
 {
-  throw "bla";
-  res.writeHead(200, {'Content-Type': 'text/html'});
-  res.write('Hello jxjjjfjWorld!');
-  res.end();
-  
+  throw HtmlException.badrequest();
   
 });
-routes.set("/api/test1/${num}", function(req,res, num)
+
+routes.set("/api/test1/${num}/", function(req,res, num)
 {
+  
+  if(isNan(num))
+  {
+    
+  }
+  
+  
   console.log(`num ${num}`);
   
   
