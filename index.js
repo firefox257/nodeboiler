@@ -1,10 +1,11 @@
 
-var {config}=require("./Configuration");
+
 var http = require('http');
 var fs = require('fs');
 var mime = require('mime-types');
+var {config}=require("./Configuration");
 var {routes}=require("./Routes");
-require("./RegisterRoutes");
+require("./api/RegisterRoutes");
 
 
 
@@ -21,9 +22,7 @@ http.createServer(function (req, res)
     }
     catch(err)
     {
-      
         routes.send(req,res,"/error/500");
-      
     }
   }
   else

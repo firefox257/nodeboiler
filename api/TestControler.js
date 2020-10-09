@@ -16,5 +16,17 @@ routes.set("/api/test", function(req,res)
   
   
 });
+routes.set("/api/test1/${num}", function(req,res, num)
+{
+  console.log(`num ${num}`);
+  
+  
+  res.writeHead(200, {'Content-Type': 'text/html'});
+  res.write(`hello ${num}`);
+  res.end();
+  
+  
+});
+
 
  //*/
