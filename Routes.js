@@ -63,8 +63,8 @@ var routes=(function()
        {
          if(!r[i])
          {
+           this.send(req, res,"/error/404");
            return;
-         
          }
          r=r[i];
        }

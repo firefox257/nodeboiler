@@ -1,34 +1,10 @@
 
-
+var {config}=require("./Configuration");
 var http = require('http');
 var fs = require('fs');
 var mime = require('mime-types');
 var {routes}=require("./Routes");
 require("./RegisterRoutes");
-
-
-var errorHtml={
-  notfound:"www/errors/404.html",
-  error:"www/errors/500.html"
-  
-};
-
-function sentHtmlPage(req, res, path)
-{
-  
-  
-        fs.stat(path, function(err, stat)
-        {
-          
-          var head = {
-             'Content-Length': stat.size,
-             'Content-Type': mime.lookup(".html")
-          };
-          res.writeHead(200, head);
-          fs.createReadStream(path).pipe(res);
-          
-        });
-}
 
 
 
@@ -46,7 +22,7 @@ http.createServer(function (req, res)
     catch(err)
     {
       
-        sentHtmlPage(req,res,errorHtml.error);
+        routes.send(req,res,"/error/500");
       
     }
   }
@@ -59,7 +35,7 @@ http.createServer(function (req, res)
     {
       if(err)
       {
-        sentHtmlPage(req,res,errorHtml.notfound);
+        routes.send(req,res,"/error/404");
       }
       else
       {
@@ -104,6 +80,6 @@ http.createServer(function (req, res)
   
   
   
-}).listen(3001);
+}).listen(config.port);
 
 
