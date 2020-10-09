@@ -30,5 +30,23 @@
   
 }
 
-module.exports={trackObject}
+function mapper(d1, d2)
+{
+  
+  for(var i in d2)
+  {
+    
+    if(d1.hasOwnProperty(i))
+    {
+      
+      d1[i]=d2[i];
+    }
+    
+  }
+  
+  return d2;
+}
+
+
+module.exports={trackObject, mapper}
 

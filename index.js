@@ -3,7 +3,32 @@
 var http = require('http');
 var fs = require('fs');
 var mime = require('mime-types');
-var routes=require("./Routes");
+var {routes}=require("./Routes");
+require("./RegisterRoutes");
+
+
+var errorHtml={
+  notfound:"www/errors/404.html",
+  error:"www/errors/500.html"
+  
+};
+
+function sentHtmlPage(req, res, path)
+{
+  
+  
+        fs.stat(path, function(err, stat)
+        {
+          
+          var head = {
+             'Content-Length': stat.size,
+             'Content-Type': mime.lookup(".html")
+          };
+          res.writeHead(200, head);
+          fs.createReadStream(path).pipe(res);
+          
+        });
+}
 
 
 
@@ -14,7 +39,16 @@ http.createServer(function (req, res)
  
   if(url.startsWith("/api"))
   {
-    
+    try
+    {
+      routes.send(req, res, url);
+    }
+    catch(err)
+    {
+      
+        sentHtmlPage(req,res,errorHtml.error);
+      
+    }
   }
   else
   {
@@ -25,19 +59,7 @@ http.createServer(function (req, res)
     {
       if(err)
       {
-        var path404="www/errors/404.html";
-        fs.stat(path404, function(err, stat404)
-        {
-          
-          var head = {
-             'Content-Length': stat404.size,
-             'Content-Type': mime.lookup(".html")
-          };
-          res.writeHead(200, head);
-          fs.createReadStream(path404).pipe(res);
-          
-        });
-        
+        sentHtmlPage(req,res,errorHtml.notfound);
       }
       else
       {
