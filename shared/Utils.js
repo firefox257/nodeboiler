@@ -2,7 +2,11 @@
 
 
 
- function trackUpdate(d)
+
+(function()
+{
+
+function trackUpdate(d)
 {
   
   var s=`{_d:d,update:{_id:d._id},`;
@@ -48,5 +52,8 @@ function mapper(d1, d2)
 }
 
 
-module.exports={trackObject, mapper}
+$fac.set("trackUpdate", trackUpdate);
+$fac.set("mapper", mapper);
 
+
+})();

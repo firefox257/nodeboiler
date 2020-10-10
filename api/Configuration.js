@@ -1,6 +1,7 @@
 
-
-
+(function()
+{
+  
 var config={
   
   port:3001,
@@ -9,5 +10,6 @@ var config={
 };
  
 
-module.exports={config}
+$fac.set("config", config);
 
+})();

@@ -1,9 +1,10 @@
 
 var db=require("nedb");
-var {Exception, HtmlException} =require(`../Exception`);
-var {routes}=require("../Routes");
+
+var $fac=require("../shared/Factory");
 
 
+$fac.inject(global,"routes, Exception, HtmlException");
 
 
 

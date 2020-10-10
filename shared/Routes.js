@@ -1,9 +1,10 @@
-var{Exception, HtmlException}=require('./Exception');
 
+(function()
+{
 
 var routes=(function()
 {
-  
+  $fac.inject(this,`Exception, HtmlException`);
   var routelist={};
   
   
@@ -98,9 +99,9 @@ var routes=(function()
 
 
 
-module.exports={routes}
+$fac.set("routes", routes);
 
 
-
+})();
 
 

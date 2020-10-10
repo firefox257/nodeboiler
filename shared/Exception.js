@@ -1,5 +1,8 @@
 
 
+(function()
+{
+
 function Exception(msg, code)
 {
   
@@ -42,5 +45,8 @@ var HtmlException={
 
 
 
-module.exports={Exception, HtmlException}
+$fac.set("Exception", Exception);
+$fac.set("HtmlException", HtmlException);
+
+})();
 

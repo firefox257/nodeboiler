@@ -1,7 +1,11 @@
 
 var mime = require('mime-types');
 var fs=require("fs");
-var {routes}=require("../Routes");
+var $fac=require("../shared/Factory");
+
+$fac.inject(global,"routes, Exception, HtmlException");
+
+
 
 function sendtHtmlPage(req, res, path, type)
 {

@@ -3,10 +3,22 @@
 var http = require('http');
 var fs = require('fs');
 var mime = require('mime-types');
-var {Exception, HtmlException} = require('./Exception');
-var {config}=require("./Configuration");
-var {routes}=require("./Routes");
+
+
+
+
+require("./api/RegisterFactory");
 require("./api/RegisterRoutes");
+var $fac=require("./shared/Factory");
+
+
+$fac.inject(global,`
+config,
+routes,
+Exception,
+HtmlException
+
+`);
 
 
 
