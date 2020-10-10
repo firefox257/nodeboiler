@@ -1,4 +1,8 @@
 
+
+(function()
+{
+
 var $fac=(function()
 {
   
@@ -21,7 +25,12 @@ var $fac=(function()
   
 })();
 
-module.exports=$fac;
+global.$fac=$fac;
+
+
+
+
+})();
 
 
 

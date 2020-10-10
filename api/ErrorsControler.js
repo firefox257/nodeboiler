@@ -1,9 +1,13 @@
 
 var mime = require('mime-types');
 var fs=require("fs");
-var $fac=require("../shared/Factory");
 
-$fac.inject(global,"routes, Exception, HtmlException");
+
+
+(function()
+{
+
+$fac.inject(this,"routes, Exception, HtmlException");
 
 
 
@@ -21,19 +25,13 @@ function sendtHtmlPage(req, res, path, type)
 }
 
 
-routes.set("/error/400", function(req,res)
+routes.set("/error/${errcode}", function(req,res,errcode)
 {
-  sendtHtmlPage(req,res,"www/errors/400.html",400);
-});
-
-routes.set("/error/404", function(req,res)
-{
-  sendtHtmlPage(req,res,"www/errors/404.html",404);
+  sendtHtmlPage(req,res,`www/errors/${errcode}.html`,errcode);
 });
 
 
-routes.set("/error/500", function(req,res)
-{
-  sendtHtmlPage(req,res,"www/errors/500.html",500);
-});
 
+
+
+})();

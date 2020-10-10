@@ -1,4 +1,6 @@
 
+require("./shared/Factory");
+
 
 var http = require('http');
 var fs = require('fs');
@@ -9,7 +11,7 @@ var mime = require('mime-types');
 
 require("./api/RegisterFactory");
 require("./api/RegisterRoutes");
-var $fac=require("./shared/Factory");
+
 
 
 $fac.inject(global,`

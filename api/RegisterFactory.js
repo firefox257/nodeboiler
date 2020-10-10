@@ -1,5 +1,4 @@
 var fs =require("fs");
-var $fac=require("../shared/Factory");
 function include(p)
 {
   eval(fs.readFileSync(p)+'');

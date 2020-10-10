@@ -1,10 +1,12 @@
 
 var db=require("nedb");
 
-var $fac=require("../shared/Factory");
+
+(function()
+{
 
 
-$fac.inject(global,"routes, Exception, HtmlException");
+$fac.inject(this,"routes, Exception, HtmlException");
 
 
 
@@ -34,5 +36,5 @@ routes.set("/api/test1/${num}/", function(req,res, num)
   
 });
 
-
+})();
  //*/
