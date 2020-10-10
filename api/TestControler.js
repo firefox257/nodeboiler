@@ -6,35 +6,32 @@ var db=require("nedb");
 {
 
 
-$fac.inject(this,"routes, Exception, HtmlException");
+$fac.inject(this,`routes, 
+Exception, 
+HtmlException,
+responses
+`);
 
-
+var json=responses.json;
 
 
 routes.set("/api/test/", function(req,res)
 {
-  throw HtmlException.badrequest();
-  
+  return json.badrequest("oh crap");
 });
 
 routes.set("/api/test1/${num}/", function(req,res, num)
 {
   
-  if(isNan(num))
-  {
-    
-  }
   
+  return json.ok({num:num});
   
-  console.log(`num ${num}`);
-  
-  
-  res.writeHead(200, {'Content-Type': 'text/html'});
-  res.write(`hello ${num}`);
-  res.end();
   
   
 });
+
+
+
 
 })();
  //*/

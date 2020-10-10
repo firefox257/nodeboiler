@@ -7,9 +7,8 @@ function Exception(msg, code)
 {
   
   return{
-    msg:msg,
-    code:code
-    
+    code:code,
+    msg:msg
   };
   
 }

@@ -4,9 +4,8 @@
 
 var routes=(function()
 {
-  $fac.inject(this,`Exception, HtmlException`);
+  $fac.inject(this,`responses, Exception, HtmlException`);
   var routelist={};
-  
   
   return {
     
@@ -35,7 +34,6 @@ var routes=(function()
       }
       
       r['__func']=func;
-      
       
     },
     send: function(req, res, path, data)
@@ -66,8 +64,6 @@ var routes=(function()
        {
          if(!r[i])
          {
-           //this.send(req, res,"/error/404");
-           //return;
            
            throw HtmlException.notfound();
          }
@@ -77,19 +73,20 @@ var routes=(function()
        
       }
       
-      
+      var response;
       if(args.length>0)
       {
         eval(`
-        r['__func'](req, res, ${args.join(',')}, data);
+        response=r['__func'](req, res, ${args.join(',')}, data);
         `);
       }
       else
       {
         eval(`
-        r['__func'](req, res, data);
+        response=r['__func'](req, res, data);
         `);
       }
+      return response;
       
     }
     

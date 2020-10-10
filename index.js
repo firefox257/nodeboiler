@@ -1,13 +1,9 @@
 
 require("./shared/Factory");
 
-
 var http = require('http');
 var fs = require('fs');
 var mime = require('mime-types');
-
-
-
 
 require("./api/RegisterFactory");
 require("./api/RegisterRoutes");
@@ -34,7 +30,16 @@ http.createServer(function (req, res)
   {
     try
     {
-      routes.send(req, res, url);
+      var response=routes.send(req, res, url);
+      var head=response.head;
+      
+      res.writeHead(response.code, head);
+      
+      res.write(response.content);
+      res.end();
+       
+       
+      
     }
     catch(ex)
     {
@@ -88,12 +93,11 @@ http.createServer(function (req, res)
           var head = {
              'Content-Length': fileSize,
              'Content-Type': mtype
-          };
+          };                   
+          
           res.writeHead(200, head);
           fs.createReadStream(url).pipe(res);
         }
-        
-      
         
       }
     });
