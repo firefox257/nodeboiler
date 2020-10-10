@@ -11,7 +11,9 @@ var routes=(function()
     
     set: function(path,func)
     {
-      var p=path.split("/");
+      var p=path.split("/").map(w=>w.trim());
+      p=p.filter(w=>w!=="");
+      
       
       var r=routelist;
       var c=0;
@@ -38,7 +40,8 @@ var routes=(function()
     },
     send: function(req, res, path, data)
     {
-      var p=path.split("/");
+      var p=path.split("/").map(w=>w.trim());
+      p=p.filter(w=>w!=="");
       
       var r=routelist;
       var c=0;

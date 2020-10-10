@@ -20,13 +20,11 @@ routes.set("/api/test/", function(req,res)
   return json.badrequest("oh crap");
 });
 
-routes.set("/api/test1/${num}/", function(req,res, num)
+routes.set("/api/test/${num}/", function(req,res, num)
 {
-  
+  if(isNaN(num)) return json.badrequest("Need to ba a number.");
   
   return json.ok({num:num});
-  
-  
   
 });
 
