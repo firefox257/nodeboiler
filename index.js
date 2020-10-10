@@ -24,12 +24,14 @@ http.createServer(function (req, res)
 {
   
   var url = decodeURI(req.url.toString());
-  //console.log("url:"+url);
+  //console.log("===================");
+  //console.log(req.method);
  
   if(url.startsWith("/api"))
   {
     try
     {
+      
       var response=routes.send(req, res, url);
       var head=response.head;
       
@@ -37,9 +39,6 @@ http.createServer(function (req, res)
       
       res.write(response.content);
       res.end();
-       
-       
-      
     }
     catch(ex)
     {

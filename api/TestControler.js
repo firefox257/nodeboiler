@@ -15,12 +15,12 @@ responses
 var json=responses.json;
 
 
-routes.set("/api/test/", function(req,res)
+routes.set("GET","/api/test/", function(req,res)
 {
-  return json.badrequest("oh crap");
+  return json.unauthorized("oh crap");
 });
 
-routes.set("/api/test/${num}/", function(req,res, num)
+routes.set("GET","/api/test/${num}/", function(req,res, num)
 {
   if(isNaN(num)) return json.badrequest("Need to ba a number.");
   

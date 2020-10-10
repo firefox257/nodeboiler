@@ -9,13 +9,15 @@ var routes=(function()
   
   return {
     
-    set: function(path,func)
+    set: function(method, path,func)
     {
       var p=path.split("/").map(w=>w.trim());
       p=p.filter(w=>w!=="");
       
       
-      var r=routelist;
+      if(!routelist[method])routelist[method]={};
+      var r=routelist[method];
+      
       var c=0;
       
       for(var i1 in p)
@@ -43,7 +45,9 @@ var routes=(function()
       var p=path.split("/").map(w=>w.trim());
       p=p.filter(w=>w!=="");
       
-      var r=routelist;
+      
+      if(!routelist[req.method])throw HtmlException.notfound();
+      var r=routelist[req.method];
       var c=0;
       
       var args=[];
@@ -75,6 +79,9 @@ var routes=(function()
        
        
       }
+      
+      
+      if(!r['__func'])throw HtmlException.notfound();
       
       var response;
       if(args.length>0)
