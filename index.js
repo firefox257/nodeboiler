@@ -25,20 +25,17 @@ http.createServer(function (req, res)
   
   var url = decodeURI(req.url.toString());
   //console.log("===================");
-  //console.log(req.method);
+  //console.log(req.method+ " "+ url);
+  
+  //console.log(req);
  
   if(url.startsWith("/api"))
   {
     try
     {
       
-      var response=routes.send(req, res, url);
-      var head=response.head;
+      response=routes.send(req, res, url);
       
-      res.writeHead(response.code, head);
-      
-      res.write(response.content);
-      res.end();
     }
     catch(ex)
     {

@@ -1,6 +1,6 @@
 
 var db=require("nedb");
-
+var fs =require("fs");
 
 (function()
 {
@@ -9,15 +9,23 @@ var db=require("nedb");
 $fac.inject(this,`routes, 
 Exception, 
 HtmlException,
+request,
 responses
 `);
 
 var json=responses.json;
+var body=request.body;
 
 
-routes.set("GET","/api/test/", function(req,res)
+routes.set("POST","/api/test/", function(req,res)
 {
-  return json.unauthorized("oh crap");
+
+  body.json(req,function(d)
+  {
+    //fs.appendFileSync('message.txt', "here1\r\n");
+    json.ok(res, {got:d})
+  });
+  
 });
 
 routes.set("GET","/api/test/${num}/", function(req,res, num)
@@ -32,4 +40,3 @@ routes.set("GET","/api/test/${num}/", function(req,res, num)
 
 
 })();
- //*/

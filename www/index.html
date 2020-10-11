@@ -11,9 +11,42 @@ screen.lockOrientation("portrait-primary");
 
 <body>
   hi there and more
-  <img src="back.jpg" />
-  <video controls='controls'>
-    <source src="movie.mp4" type="video/mp4"/>
-  </video>
+ 
+ <button onclick="start();">click</button>
+ 
+  <script>
+    
+    async function start()
+    {
+      alert(1);
+      try
+      {
+      
+      
+      var v1=  await fetch('/api/test/', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json;charset=utf-8'
+  },
+  body: JSON.stringify({hi:123})
+});
+
+      
+      var result = await v1.json();
+      alert(JSON.stringify(result));
+      
+      
+      
+      }
+      catch(err)
+      {
+        
+        alert(err);
+      }
+      
+    
+    }
+    
+  </script>
 </body>
 </html>

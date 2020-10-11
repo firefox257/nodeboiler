@@ -9,16 +9,29 @@
   var request={
     body:{
       
-      json:function(req)
+      json:function(req, callback)
       {
-        var data = [];
-          req.on('data', chunk => {
-            data.push(chunk)
+          
+          var body = '';
+          req.on('data', function (data) 
+          {
+            body += data;
+            if (body.length > 1e8) 
+            { 
+                request.connection.destroy();
+            }
           });
-          req.on('end', () => {
-            return JSON.parse(data);
+          req.on('end', function () 
+          {
+            callback(JSON.parse(body));
           });
-      },
+          
+      }
+      
+      
+      
+      
+      
       
     }
   };
