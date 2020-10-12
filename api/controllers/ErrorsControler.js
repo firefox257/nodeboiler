@@ -25,8 +25,9 @@ function sendtHtmlPage(req, res, path, type)
 }
 
 
-routes.set("GET","/error/${errcode}", function(req,res,errcode)
+routes.set("GET","/errors/${errcode}", function(req,res,errcode)
 {
+  
   sendtHtmlPage(req,res,`www/errors/${errcode}.html`,errcode);
 });
 

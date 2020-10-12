@@ -1,7 +1,7 @@
 
 
-require("./ErrorsControler")
-require("./TestControler");
+require("./controllers/ErrorsControler")
+require("./controllers/TestControler");
 
 
 

@@ -14,7 +14,10 @@ $fac.inject(global,`
 config,
 routes,
 Exception,
-HtmlException
+HtmlException,
+AuthorizationRoutes,
+responses
+
 
 `);
 
@@ -24,34 +27,58 @@ http.createServer(function (req, res)
 {
   
   var url = decodeURI(req.url.toString());
+  
+  //console.log(req.headers);
   //console.log("===================");
   //console.log(req.method+ " "+ url);
-  
   //console.log(req);
  
   if(url.startsWith("/api"))
   {
+    
+    if(AuthorizationRoutes.required(url))
+    {
+      if(!req.headers["Authorization"])
+      {
+        responses.json.unauthorized(res);
+        return;
+      }
+    
+    }
+    
     try
     {
       
-      response=routes.send(req, res, url);
+      routes.send(req, res, url);
       
     }
     catch(ex)
     {
       console.log(ex);
-      if(!ex.code)
+      if(ex["code"]==undefined)
       {
-        routes.send(req,res,"/error/500");
+        responses.json.error(res);
       }
       else
       {
-        routes.send(req,res,`/error/${ex.code}`);
+        responses.json.send(res,ex);
       }
     }
   }
   else
   {
+    
+    if(AuthorizationRoutes.required(url))
+    {
+      if(!req.headers["Authorization"])
+      {
+        routes.send(req,res,"/errors/401");
+        return;
+      }
+    
+    }
+    
+    
     if(url.endsWith("/"))url+="index.html";
     url="www"+url;
     
@@ -59,7 +86,7 @@ http.createServer(function (req, res)
     {
       if(err)
       {
-        routes.send(req,res,"/error/404");
+        routes.send(req,res,"/errors/404");
       }
       else
       {

@@ -46,8 +46,8 @@ var routes=(function()
       p=p.filter(w=>w!=="");
       
       
-      if(!routelist[req.method])throw HtmlException.notfound();
-      var r=routelist[req.method];
+      if(!routelist[req.method.toUpperCase()])throw HtmlException.notfound();
+      var r=routelist[req.method.toUpperCase()];
       var c=0;
       
       var args=[];
@@ -83,20 +83,20 @@ var routes=(function()
       
       if(!r['__func'])throw HtmlException.notfound();
       
-      var response;
+      
       if(args.length>0)
       {
         eval(`
-        response=r['__func'](req, res, ${args.join(',')}, data);
+        r['__func'](req, res, ${args.join(',')}, data);
         `);
       }
       else
       {
         eval(`
-        response=r['__func'](req, res, data);
+        r['__func'](req, res, data);
         `);
       }
-      return response;
+      
       
     }
     

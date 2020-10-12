@@ -30,9 +30,9 @@ routes.set("POST","/api/test/", function(req,res)
 
 routes.set("GET","/api/test/${num}/", function(req,res, num)
 {
-  if(isNaN(num)) return json.badrequest("Need to ba a number.");
+  if(isNaN(num)) return json.badrequest(res,"Need to ba a number.");
   
-  return json.ok({num:num});
+  json.ok(res, {num:num});
   
 });
 
