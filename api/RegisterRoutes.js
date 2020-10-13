@@ -1,7 +1,7 @@
 
 
-require("./controllers/ErrorsControler")
-require("./controllers/TestControler");
+include("controllers/ErrorsControler.js")
+include("controllers/TestControler.js");
 
 
 

@@ -8,6 +8,24 @@
   
   function response(res,code,header,content)
   {
+    
+    const headers = {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, PATCH, DELETE",
+      "Access-Control-Max-Age": 2592000, // 30 days
+      /** add other headers as per requirement */
+      "Access-Control-Allow-Headers":"Origin, X-Requested-With, Content-Type, Accept, Authorization"
+    };
+    for(var i in headers)
+    {
+      
+      header[i]=headers[i];
+    }
+
+    
+    
+    
+    
     res.writeHead(code, header);
     res.write(content);
     res.end();

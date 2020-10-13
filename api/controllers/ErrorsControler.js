@@ -1,5 +1,5 @@
 
-var mime = require('mime-types');
+/*var mime = require('mime-types');
 var fs=require("fs");
 
 
@@ -36,3 +36,5 @@ routes.set("GET","/errors/${errcode}", function(req,res,errcode)
 
 
 })();
+*/
+

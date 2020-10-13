@@ -42,15 +42,30 @@ var routes=(function()
     },
     send: function(req, res, path, data)
     {
+      
+      
+      var method=req.method;
+      
+      
+      //console.log(method+ " sending "+path);
+      
+      
+      
       var p=path.split("/").map(w=>w.trim());
       p=p.filter(w=>w!=="");
       
       
-      if(!routelist[req.method.toUpperCase()])throw HtmlException.notfound();
-      var r=routelist[req.method.toUpperCase()];
+      if(!routelist[method])
+      {
+        
+        throw HtmlException.notfound();
+       }
+      var r=routelist[method];
       var c=0;
       
       var args=[];
+      
+      
       for(var i1 in p)
       {
        var i=p[i1];
@@ -81,21 +96,38 @@ var routes=(function()
       }
       
       
-      if(!r['__func'])throw HtmlException.notfound();
+      
+      if(!r['__func'])
+      {
+        console.log("here3");
+        throw HtmlException.notfound();
+      }
       
       
-      if(args.length>0)
+      try
       {
-        eval(`
-        r['__func'](req, res, ${args.join(',')}, data);
-        `);
+      
+      
+        if(args.length>0)
+        {
+          eval(`
+          r['__func'](req, res, ${args.join(',')}, data);
+          `);
+        }
+        else
+        {
+          eval(`
+          r['__func'](req, res, data);
+          `);
+        }
       }
-      else
+      catch(err)
       {
-        eval(`
-        r['__func'](req, res, data);
-        `);
+        console.log(err);
+        HtmlException.error(err);
       }
+      
+      
       
       
     }

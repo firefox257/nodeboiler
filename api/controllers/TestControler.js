@@ -17,9 +17,11 @@ var json=responses.json;
 var body=request.body;
 
 
-routes.set("POST","/api/test/", function(req,res)
+routes.set("POST","/test/", function(req,res)
 {
-
+  
+  
+  
   body.json(req,function(d)
   {
     //fs.appendFileSync('message.txt', "here1\r\n");
@@ -28,11 +30,11 @@ routes.set("POST","/api/test/", function(req,res)
   
 });
 
-routes.set("GET","/api/test/${num}/", function(req,res, num)
+routes.set("GET","/test/${num}/", function(req,res, num)
 {
   if(isNaN(num)) return json.badrequest(res,"Need to ba a number.");
   
-  json.ok(res, {num:num});
+   json.ok(res, {num:num});
   
 });
 

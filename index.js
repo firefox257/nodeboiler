@@ -1,135 +1,70 @@
-
-require("./shared/Factory");
-
-var http = require('http');
-var fs = require('fs');
-var mime = require('mime-types');
-
-require("./api/RegisterFactory");
-require("./api/RegisterRoutes");
+var fs = require("fs")
+var vm = require('vm')
 
 
 
-$fac.inject(global,`
-config,
-routes,
-Exception,
-HtmlException,
-AuthorizationRoutes,
-responses
-
-
-`);
-
-
-
-http.createServer(function (req, res) 
+function Factory()
 {
   
-  var url = decodeURI(req.url.toString());
+  var items={};
   
-  //console.log(req.headers);
-  //console.log("===================");
-  //console.log(req.method+ " "+ url);
-  //console.log(req);
- 
-  if(url.startsWith("/api"))
+  return{
+    
+    set:function(n,item)
+    {
+      items[n]=item;
+    },
+    inject: function(scope, s)
+    {
+      s=s.split(",").map(w=>w.trim());
+      s.filter(w=>w!=="");
+      s.map(w=>scope[w]=items[w]);
+    }
+    
+  };
+  
+}
+
+
+function server(basedir)
+{
+  var $fac=Factory();
+  var context=
   {
-    
-    if(AuthorizationRoutes.required(url))
+    $fac:$fac,
+    console:console,
+    require:require
+  };
+  vm.createContext(context);
+  
+  var ret={
+    include: function(filename)
     {
-      if(!req.headers["Authorization"])
-      {
-        responses.json.unauthorized(res);
-        return;
-      }
-    
-    }
-    
-    try
-    {
-      
-      routes.send(req, res, url);
+      vm.runInContext(fs.readFileSync(basedir+filename,'utf8'),context);
       
     }
-    catch(ex)
-    {
-      console.log(ex);
-      if(ex["code"]==undefined)
-      {
-        responses.json.error(res);
-      }
-      else
-      {
-        responses.json.send(res,ex);
-      }
-    }
-  }
-  else
-  {
-    
-    if(AuthorizationRoutes.required(url))
-    {
-      if(!req.headers["Authorization"])
-      {
-        routes.send(req,res,"/errors/401");
-        return;
-      }
-    
-    }
-    
-    
-    if(url.endsWith("/"))url+="index.html";
-    url="www"+url;
-    
-    fs.stat(url, function(err, stat)
-    {
-      if(err)
-      {
-        routes.send(req,res,"/errors/404");
-      }
-      else
-      {
-      
-        var range = req.headers.range;
-        var fileSize = stat.size;
-        var mtype=mime.lookup(url);
-        
-        if (range) 
-        {
-          var parts = range.replace(/bytes=/, "").split("-")
-          var start = parseInt(parts[0], 10);
-          var end = parts[1] ? parseInt(parts[1], 10): fileSize-1;
-          var chunksize = (end-start)+1;
-          var file = fs.createReadStream(url, {start, end})
-          var head = {
-            'Content-Range': `bytes ${start}-${end}/${fileSize}`,
-            'Accept-Ranges': 'bytes',
-            'Content-Length': chunksize,
-            'Content-Type': mtype
-          };
-          res.writeHead(206, head);
-          file.pipe(res);
-        }
-        else 
-        {
-          var head = {
-             'Content-Length': fileSize,
-             'Content-Type': mtype
-          };                   
-          
-          res.writeHead(200, head);
-          fs.createReadStream(url).pipe(res);
-        }
-        
-      }
-    });
-    
-    
-  }
+  };
+  context.include=ret.include;
+  
+  return ret;
+}
+
+
+
+
+(function()
+{
+  
+  var web=server("./webserver/");
+  web.include("configuration.js");
+  web.include("server.js");
   
   
+  var api=server("./api/");
+  api.include("configuration.js");
+  api.include("server.js");
   
-}).listen(config.port);
+  
+})();
 
 

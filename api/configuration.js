@@ -5,7 +5,12 @@
 
 var config={
   
-  port:3001,
+  basedir:"api/",
+  get dir()
+  {
+    return this.basedir;
+  },
+  port:3002,
   isDev:true
   
 };
