@@ -59,14 +59,13 @@ http.createServer(function (req, res)
     
     
     
-    try
+    
+    
+      
+    routes.send(req, res, url)
+    .catch(function(ex)
     {
       
-      routes.send(req, res, url);
-      
-    }
-    catch(ex)
-    {
       console.log(ex);
       if(ex["code"]==undefined)
       {
@@ -76,7 +75,7 @@ http.createServer(function (req, res)
       {
         response(res).json.send(ex);
       }
-    }
+    });
   
     
     

@@ -76,7 +76,6 @@ var routes=(function()
       r=r[p.length];
       if(!r)
       {
-        
         throw HtmlException.notfound();
       }
       
@@ -120,25 +119,8 @@ var routes=(function()
         throw HtmlException.notfound();
       }
       
-      
-      
-      
-      try
-      {
-        
-          var res2=await r['__func'](request(req), response(res), args);
+          await r['__func'](request(req), response(res), args);
           
-          res.end();
-      }
-      catch(err)
-      {
-        console.log(err);
-        HtmlException.error(err);
-      }
-      
-      
-      
-      
     }
     
   };

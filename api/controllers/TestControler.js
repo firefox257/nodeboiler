@@ -23,6 +23,9 @@ routes.set("POST","/test/",  async function(req,res)
 
 routes.set("GET","/test/${num}/", async function(req,res, args)
 {
+  
+  
+    throw HtmlException.badrequest();
   if(isNaN(args.num))
   {
     

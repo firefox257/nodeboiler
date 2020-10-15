@@ -12,7 +12,7 @@
     h.head=head;
     res.writeHead(code, h.head);
     res.write(content);
-    //res.end();
+    res.end();
   };
   
   function jsonmsg(code, msg)
