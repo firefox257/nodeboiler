@@ -10,6 +10,7 @@ include("RegisterFactory.js");
 
 $fac.inject(this,`
 config,
+header,
 routes,
 Exception,
 HtmlException,
@@ -17,22 +18,22 @@ AuthorizationRoutes,
 response
 `);
 
-
+var head =header().head;
 
 
 http.createServer(function (req, res) 
 {
   
-  const headers = {
+  /*const headers = {
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, PATCH, DELETE",
       "Access-Control-Max-Age": 2592000, // 30 days
-      /** add other headers as per requirement */
+     
       "Access-Control-Allow-Headers":"Origin, X-Requested-With, Content-Type, Accept, Authorization"
-    };
+    };*/
 
     if (req.method === "OPTIONS") {
-      res.writeHead(204, headers);
+      res.writeHead(204, head);
       res.end();
       return;
   }

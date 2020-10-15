@@ -6,27 +6,11 @@
 (function()
 {
   
-  function makeResponse(res,code,header,content)
+  function makeResponse(res,code,head,content)
   {
-    
-    const headers = {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, PATCH, DELETE",
-      "Access-Control-Max-Age": 2592000, // 30 days
-      /** add other headers as per requirement */
-      "Access-Control-Allow-Headers":"Origin, X-Requested-With, Content-Type, Accept, Authorization"
-    };
-    for(var i in headers)
-    {
-      
-      header[i]=headers[i];
-    }
-
-    
-    
-    
-    
-    res.writeHead(code, header);
+    var h=header();
+    h.head=head;
+    res.writeHead(code, h.head);
     res.write(content);
     //res.end();
   };
