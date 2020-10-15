@@ -1,16 +1,10 @@
 
 
 
-require("./Configuration");
-require('./Routes.js');
-require("./Request");
-require("./Response");
-require("./AuthorizationRoutes");
-require("./Database/Entities/RegisterEntities");
-
-require('../shared/Exception.js');
-require("../shared/Utils.js");
-
-
+include("Request.js");
+include("Response.js");
+include("Exception.js");
+include("Routes.js");
+include("RegisterRoutes.js");
 
  

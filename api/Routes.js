@@ -1,11 +1,19 @@
 
+
+
 (function()
 {
 
 var routes=(function()
 {
-  $fac.inject(this,`responses, Exception, HtmlException`);
+  $fac.inject(this,`
+  request, 
+  response,
+  Exception, 
+  HtmlException`);
+  
   var routelist={};
+  
   
   return {
     
@@ -17,21 +25,29 @@ var routes=(function()
       
       if(!routelist[method])routelist[method]={};
       var r=routelist[method];
+      if(!r[p.length])r[p.length]={}
+      r=r[p.length];
       
       var c=0;
       
       for(var i1 in p)
       {
-        var i=p[i1];
+       var i=p[i1];
+       var name=undefined;
        if(i.startsWith("${"))
        {
+         name=i.substring(2, i.length-1);
          i="__all";
+         
+         
+         
        }
        if(!r[i])
        {
          r[i]={};
          
        }
+       r.__name=name;
        r._node=i;
        r=r[i];
        
@@ -40,16 +56,12 @@ var routes=(function()
       r['__func']=func;
       
     },
-    send: function(req, res, path, data)
+    send: async function(req, res, path, data)
     {
-      
       
       var method=req.method;
       
-      
       //console.log(method+ " sending "+path);
-      
-      
       
       var p=path.split("/").map(w=>w.trim());
       p=p.filter(w=>w!=="");
@@ -61,9 +73,16 @@ var routes=(function()
         throw HtmlException.notfound();
        }
       var r=routelist[method];
+      r=r[p.length];
+      if(!r)
+      {
+        
+        throw HtmlException.notfound();
+      }
+      
       var c=0;
       
-      var args=[];
+      var args={};
       
       
       for(var i1 in p)
@@ -72,13 +91,14 @@ var routes=(function()
        
        if(r._node=="__all")
        {
+         
          if(isNaN(i))
          {
-           args.push(`"${i}"`);
+           args[r.__name]=i;
          }
          else
          {
-           args.push(Number(i));
+           args[r.__name]=Number(i);
          }
          r=r["__all"];
        }
@@ -95,31 +115,20 @@ var routes=(function()
        
       }
       
-      
-      
       if(!r['__func'])
       {
-        console.log("here3");
         throw HtmlException.notfound();
       }
       
       
+      
+      
       try
       {
-      
-      
-        if(args.length>0)
-        {
-          eval(`
-          r['__func'](req, res, ${args.join(',')}, data);
-          `);
-        }
-        else
-        {
-          eval(`
-          r['__func'](req, res, data);
-          `);
-        }
+        
+          var res2=await r['__func'](request(req), response(res), args);
+          
+          res.end();
       }
       catch(err)
       {

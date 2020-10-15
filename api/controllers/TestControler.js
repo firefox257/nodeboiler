@@ -8,33 +8,28 @@ var fs =require("fs");
 
 $fac.inject(this,`routes, 
 Exception, 
-HtmlException,
-request,
-responses
+HtmlException
 `);
 
-var json=responses.json;
-var body=request.body;
 
 
-routes.set("POST","/test/", function(req,res)
+
+routes.set("POST","/test/",  async function(req,res)
 {
-  
-  
-  
-  body.json(req,function(d)
-  {
-    //fs.appendFileSync('message.txt', "here1\r\n");
-    json.ok(res, {got:d})
-  });
+  retval= await req.toJson();
+  res.json.ok({got:retval})
   
 });
 
-routes.set("GET","/test/${num}/", function(req,res, num)
+routes.set("GET","/test/${num}/", async function(req,res, args)
 {
-  if(isNaN(num)) return json.badrequest(res,"Need to ba a number.");
+  if(isNaN(args.num))
+  {
+    
+    return res.json.badrequest("Need to ba a number.");
+  }
   
-   json.ok(res, {num:num});
+   return res.json.ok({num:args.num});
   
 });
 

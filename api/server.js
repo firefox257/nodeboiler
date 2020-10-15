@@ -4,12 +4,8 @@ var http = require('http');
 var fs = require('fs');
 var mime = require('mime-types');
 
-include("Routes.js");
-include("Request.js");
-include("Response.js");
-include("Exception.js");
 
-include("RegisterRoutes.js");
+include("RegisterFactory.js");
 
 
 $fac.inject(this,`
@@ -18,7 +14,7 @@ routes,
 Exception,
 HtmlException,
 AuthorizationRoutes,
-responses
+response
 `);
 
 
@@ -73,11 +69,11 @@ http.createServer(function (req, res)
       console.log(ex);
       if(ex["code"]==undefined)
       {
-        responses.json.error(res);
+        response(res).json.error();
       }
       else
       {
-        responses.json.send(res,ex);
+        response(res).json.send(ex);
       }
     }
   

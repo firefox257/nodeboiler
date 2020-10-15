@@ -6,7 +6,7 @@
 (function()
 {
   
-  function response(res,code,header,content)
+  function makeResponse(res,code,header,content)
   {
     
     const headers = {
@@ -28,7 +28,7 @@
     
     res.writeHead(code, header);
     res.write(content);
-    res.end();
+    //res.end();
   };
   
   function jsonmsg(code, msg)
@@ -36,56 +36,63 @@
     return JSON.stringify({code:code,msg:msg});
   }
   
-  $fac.set("response", response);
+
   
-  var responses={
+  
+  
+  
+  var response= function(res)
+  {
     
+    
+  return {
+    res:res,
     json:{
-      send:function(res, ex)
+      send:function(ex)
       {
-        response(res,ex.code,
+        makeResponse(res,ex.code,
         {'Content-Type': 'application/json'},
         JSON.stringify(ex)
         );
       },
-      ok:function(res, obj)
+      ok:function(obj)
       {
-        response(res, 200,
+        makeResponse(res, 200,
         {'Content-Type': 'application/json'},
         JSON.stringify(obj)
         );
       },
-      badrequest:function(res,msg)
+        badrequest:function(msg)
       {
-        response(res, 400,
+        makeResponse(res, 400,
         {'Content-Type': 'application/json'},
         jsonmsg(400,msg ? msg : "Bad Request")
         ); 
       },
-     unauthorized:function(res, msg)
+     unauthorized:function(msg)
       {
-        response(res, 401,
+        makeResponse(res, 401,
         {'Content-Type': 'application/json'},
         jsonmsg(401,msg?msg:"Unauthorized")
         );
       },
-      forbidden:function(res, msg)
+      forbidden:function(msg)
       {
-        response(res, 403,
+        makeResponse(res, 403,
         {'Content-Type': 'application/json'},
         jsonmsg(403,msg?msg:"Forbidden")
         );
       },
-      notfound:function(res, msg)
+      notfound:function(msg)
       {
-        response(res, 404,
+        makeResponse(res, 404,
         {'Content-Type': 'application/json'},
         jsonmsg(404,msg?msg:"Not Found")
         );
       },
-      notfound:function(res, msg)
+      error:function(msg)
       {
-        response(res, 500,
+        makeResponse(res, 500,
         {'Content-Type': 'application/json'},
         
         jsonmsg(500,msg?msg:"Server Error")
@@ -96,44 +103,44 @@
     },
     txt:{
       
-      ok:function(res, obj)
+      ok:function(obj)
       {
-        response(res, 200,
+        makeResponse(res, 200,
         {'Content-Type': 'text/plain'},
         obj
         );
       },
-      badrequest:function(res,msg)
+      badrequest:function(msg)
       {
-        response(res, 400,
+        makeResponse(res, 400,
         {'Content-Type': 'text/plain'},
         msg ? msg : "Bad Request"
         ); 
       },
-     unauthorized:function(res, msg)
+     unauthorized:function(msg)
       {
-        response(res, 401,
+        makeResponse(res, 401,
         {'Content-Type': 'text/plain'},
         msg?msg:"Unauthorized"
         );
       },
-      forbidden:function(res, msg)
+      forbidden:function(msg)
       {
-        response(res, 403,
+        makeResponse(res, 403,
         {'Content-Type': 'text/plain'},
         msg?msg:"Forbidden"
         );
       },
-      notfound:function(res, msg)
+      notfound:function(msg)
       {
-        response(res, 404,
+        makeResponse(res, 404,
         {'Content-Type': 'text/plain'},
         msg?msg:"Not Found"
         );
       },
-      notfound:function(res, msg)
+      error:function(msg)
       {
-        response(res, 500,
+        makeResponse(res, 500,
         {'Content-Type': 'text/plain'},
         msg?msg:"Server Error"
         );
@@ -142,14 +149,11 @@
       
     },
     
-    
-    
-    
-      
-    
-    
   };
+  
+  
+  }
 
-$fac.set("responses", responses);
+$fac.set("response", response);
 
 })();
