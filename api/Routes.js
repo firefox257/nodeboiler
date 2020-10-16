@@ -61,7 +61,7 @@ var routes=(function()
       
       var method=req.method;
       
-      //console.log(method+ " sending "+path);
+        //console.log(method+ " sending "+path);
       
       var p=path.split("/").map(w=>w.trim());
       p=p.filter(w=>w!=="");
