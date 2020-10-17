@@ -23,19 +23,11 @@ var head =new header().list;
 
 http.createServer(function (req, res) 
 {
-  
-  /*const headers = {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, PATCH, DELETE",
-      "Access-Control-Max-Age": 2592000, // 30 days
-     
-      "Access-Control-Allow-Headers":"Origin, X-Requested-With, Content-Type, Accept, Authorization"
-    };*/
 
-    if (req.method === "OPTIONS") {
-      res.writeHead(204, head);
-      res.end();
-      return;
+  if (req.method === "OPTIONS") {
+    res.writeHead(204, head);
+    res.end();
+    return;
   }
   
   var url = decodeURI(req.url.toString());

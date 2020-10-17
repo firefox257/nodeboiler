@@ -7,6 +7,7 @@ var fs =require("fs");
 
 
 $fac.inject(this,`routes, 
+cors,
 Exception, 
 HtmlException,
 JsonRequest,
@@ -16,14 +17,14 @@ JsonResponse
 
 
 
-routes.set("POST","/test/",  JsonRequest, JsonResponse, async function(req,res)
+routes.set("POST",cors.web,  "/test/", JsonRequest, JsonResponse, async function(req,res)
 {
   retval= await req.body();
   res.ok({got:retval})
   
 });
 
-routes.set("GET","/test/${num}/", JsonRequest, JsonResponse, async function(req,res, args)
+routes.set("GET", cors.web,  "/test/${num}/", JsonRequest, JsonResponse, async function(req,res, args)
 {
   
   

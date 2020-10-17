@@ -15,8 +15,9 @@ var routes=(function()
   
   return {
     
-    set: function(method,path, reqtype, restype, func)
+    set: function(method, cor, path, reqtype, restype, func)
     {
+      
       var p=path.split("/").map(w=>w.trim());
       p=p.filter(w=>w!=="");
       
@@ -52,6 +53,7 @@ var routes=(function()
       }
       
       r['__func']=func;
+      r['__cors']=cor;
       r['__reqtype']=reqtype;
       r['__restype']=restype;
       
@@ -119,7 +121,20 @@ var routes=(function()
         throw HtmlException.notfound();
       }
       
-          await r['__func'](new r['__reqtype'](req), new r['__restype'](res), args);
+      var reqt =new r['__reqtype'](req);
+      var rest =new r['__restype'](res);
+      
+      
+      /*if(!reqt.istype())
+      {
+        
+        rest.badrequest();
+        return;
+      }*/
+      rest.setHeader(r['__cors']);
+      
+      
+      await r['__func'](reqt, rest, args);
           
     }
     
