@@ -7,8 +7,6 @@
 var routes=(function()
 {
   $fac.inject(this,`
-  request, 
-  response,
   Exception, 
   HtmlException`);
   
@@ -17,7 +15,7 @@ var routes=(function()
   
   return {
     
-    set: function(method, path,func)
+    set: function(method,path, reqtype, restype, func)
     {
       var p=path.split("/").map(w=>w.trim());
       p=p.filter(w=>w!=="");
@@ -54,6 +52,8 @@ var routes=(function()
       }
       
       r['__func']=func;
+      r['__reqtype']=reqtype;
+      r['__restype']=restype;
       
     },
     send: async function(req, res, path, data)
@@ -119,7 +119,7 @@ var routes=(function()
         throw HtmlException.notfound();
       }
       
-          await r['__func'](request(req), response(res), args);
+          await r['__func'](new r['__reqtype'](req), new r['__restype'](res), args);
           
     }
     

@@ -8,31 +8,33 @@ var fs =require("fs");
 
 $fac.inject(this,`routes, 
 Exception, 
-HtmlException
+HtmlException,
+JsonRequest,
+JsonResponse
 `);
 
 
 
 
-routes.set("POST","/test/",  async function(req,res)
+routes.set("POST","/test/",  JsonRequest, JsonResponse, async function(req,res)
 {
-  retval= await req.toJson();
-  res.json.ok({got:retval})
+  retval= await req.body();
+  res.ok({got:retval})
   
 });
 
-routes.set("GET","/test/${num}/", async function(req,res, args)
+routes.set("GET","/test/${num}/", JsonRequest, JsonResponse, async function(req,res, args)
 {
   
   
-    throw HtmlException.badrequest();
+    //throw HtmlException.badrequest();
   if(isNaN(args.num))
   {
     
-    return res.json.badrequest("Need to ba a number.");
+    return res.badrequest("Need to ba a number.");
   }
   
-   return res.json.ok({num:args.num});
+   return res.ok({num:args.num});
   
 });
 

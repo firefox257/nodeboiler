@@ -1,34 +1,11 @@
 var fs = require("fs")
 var vm = require('vm')
-
-
-
-function Factory()
-{
-  
-  var items={};
-  
-  return{
-    
-    set:function(n,item)
-    {
-      items[n]=item;
-    },
-    inject: function(scope, s)
-    {
-      s=s.split(",").map(w=>w.trim());
-      s.filter(w=>w!=="");
-      s.map(w=>scope[w]=items[w]);
-    }
-    
-  };
-  
-}
+var Factory= require("./Factory")
 
 
 function server(basedir)
 {
-  var $fac=Factory();
+  var $fac=new Factory();
   var context=
   {
     $fac:$fac,
@@ -51,16 +28,14 @@ function server(basedir)
 
 
 
-
 (function()
 {
   
-  var web=server("./webserver/");
+  var web= server("./webserver/");
   web.include("configuration.js");
   web.include("server.js");
   
-  
-  var api=server("./api/");
+  var api= server("./api/");
   api.include("configuration.js");
   api.include("server.js");
   
