@@ -32,4 +32,5 @@ class header
   }
 };
 
+$fac.set("header", header);
 
