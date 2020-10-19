@@ -2,51 +2,15 @@
 
 (function()
 {
-  $fac.inject("Exception");
+  $fac.inject(this, "Exception");
   
-/*
-function Exception(msg, code)
+
+class HtmlException extends Exception
 {
   
-  return{
-    code:code,
-    msg:msg
-  };
-  
-}
-*/
-
-/*
-var HtmlException={
-  
-  badrequest: function(msg)
-  {
-    return Exception(msg, 400);
-  },
-  unathorized: function(msg)
-  {
-    return Exception(msg,401);
-  },
-  forbidden: function(msg)
-  {
-    return Exception(msg,403);
-  },
-  notfound: function(msg)
-  {
-    return Exception(msg,404);
-  },
-  error: function(msg)
-  {
-    return Exception(msg,500);
-  },
-  notimplemented: function(msg)
-  {
-    return Exception(msg,501);
-  }
 };
 
-*/
-class HtmlBadRequestException extends Exception
+class HtmlBadRequestException extends HtmlException
 {
   constructor(msg)
   {
@@ -55,7 +19,7 @@ class HtmlBadRequestException extends Exception
   }
 };
 
-class HtmlUnauthorizedException extends Exception
+class HtmlUnauthorizedException extends HtmlException
 {
   constructor(msg)
   {
@@ -64,7 +28,7 @@ class HtmlUnauthorizedException extends Exception
   }
 };
 
-class HtmlForbiddenException extends Exception
+class HtmlForbiddenException extends HtmlException
 {
   constructor(msg)
   {
@@ -73,7 +37,7 @@ class HtmlForbiddenException extends Exception
   }
 };
 
-class HtmlNotFoundException extends Exception
+class HtmlNotFoundException extends HtmlException
 {
   constructor(msg)
   {
@@ -82,7 +46,7 @@ class HtmlNotFoundException extends Exception
   }
 };
 
-class HtmlErrorException extends Exception
+class HtmlErrorException extends HtmlException
 {
   constructor(msg)
   {
@@ -91,8 +55,24 @@ class HtmlErrorException extends Exception
   }
 };
 
-//$fac.set("Exception", Exception);
+class HtmlNotImplementedException extends HtmlException
+{
+  constructor(msg)
+  {
+    this.code=501;
+    this.msg= msg? msg: "Not Implemented";
+  }
+};
+
+
 $fac.set("HtmlException", HtmlException);
+$fac.set("HtmlBadRequestException", HtmlBadRequestException);
+$fac.set("HtmlUnauthorizedException", HtmlUnauthorizedException);
+$fac.set("HtmlForbiddenException", HtmlForbiddenException);
+$fac.set("HtmlNotFoundException", HtmlNotFoundException);
+$fac.set("HtmlErrorException", HtmlErrorException);
+$fac.set("HtmlNotImplementedException", HtmlNotImplementedException);
+
 
 })();
 

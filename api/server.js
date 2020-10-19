@@ -12,8 +12,7 @@ $fac.inject(this,`
 config,
 header,
 routes,
-Exception,
-HtmlException,
+ExceptionHandler,
 AuthorizationRoutes,
 response
 `);
@@ -57,16 +56,7 @@ http.createServer(function (req, res)
     routes.send(req, res, url)
     .catch(function(ex)
     {
-      
-      console.log(ex);
-      if(ex["code"]==undefined)
-      {
-        response(res).json.error();
-      }
-      else
-      {
-        response(res).json.send(ex);
-      }
+      ExceptionHandler(res,ex);
     });
   
     

@@ -7,8 +7,8 @@
 var routes=(function()
 {
   $fac.inject(this,`
-  Exception, 
-  HtmlException`);
+  JsonNotFoundException
+ `);
   
   var routelist={};
   
@@ -72,13 +72,13 @@ var routes=(function()
       if(!routelist[method])
       {
         
-        throw HtmlException.notfound();
+        throw new JsonNotFoundException();
        }
       var r=routelist[method];
       r=r[p.length];
       if(!r)
       {
-        throw HtmlException.notfound();
+        throw new JsonNotFoundException();
       }
       
       var c=0;
