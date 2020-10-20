@@ -22,9 +22,6 @@ var mime = require('mime-types');
       this.#res=res;
       this.#head=new header();
       
-      //this.#head.list={'Content-Type': 'application/json'};
-      
-      
     }
     setHeader(v)
     {
@@ -39,33 +36,20 @@ var mime = require('mime-types');
         try
         {
           
-          //new FileResponse(this.#res).send(200, path);
-          
           var stat =fs.statSync(path);
           
           
           this.#head.list={
             'Content-Type': mime.lookup(path),
             'Content-Length': stat.size};
-          
-          
-          console.log(this.#head.list);
           this.#res.writeHead(200, this.#head.list);
           fs.createReadStream(path).pipe(this.#res);
       
-          
-          
-          
-          
           return;
         }
         catch(ex)
         {
           //do nothing let fall through
-          console.log("not found");
-          console.log(ex);
-          
-          
         }
         
       }
