@@ -12,55 +12,55 @@ class HtmlException extends Exception
 
 class HtmlBadRequestException extends HtmlException
 {
-  constructor(msg)
+  constructor(message, error)
   {
-    this.code=400;
-    this.msg= msg? msg: "Bad Request";
+    super(400, message? message: "Bad Request", error);
+    
   }
 };
 
 class HtmlUnauthorizedException extends HtmlException
 {
-  constructor(msg)
+  constructor(message, error)
   {
-    this.code=401;
-    this.msg= msg? msg: "Unauthorized";
+    super(401, message? message: "Unauthorized", error);
+    
   }
 };
 
 class HtmlForbiddenException extends HtmlException
 {
-  constructor(msg)
+  constructor(message, error)
   {
-    this.code=403;
-    this.msg= msg? msg: "Forbidden";
+    super(403, message? message: "Forbidden", error);
+    
   }
 };
 
 class HtmlNotFoundException extends HtmlException
 {
-  constructor(msg)
+  constructor(message, error)
   {
-    this.code=404;
-    this.msg= msg? msg: "Not Found";
+    super(404, message? message: "Not Found", error);
+    
   }
 };
 
 class HtmlErrorException extends HtmlException
 {
-  constructor(msg)
+  constructor(message, error)
   {
-    this.code=500;
-    this.msg= msg? msg: "Error";
+    super(500, msg? msg: "Error", error);
+    
   }
 };
 
 class HtmlNotImplementedException extends HtmlException
 {
-  constructor(msg)
+  constructor(message, error)
   {
-    this.code=501;
-    this.msg= msg? msg: "Not Implemented";
+    super(501, msg? msg: "Not Implemented", error);
+    
   }
 };
 

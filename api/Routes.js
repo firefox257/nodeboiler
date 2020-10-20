@@ -76,8 +76,10 @@ var routes=(function()
        }
       var r=routelist[method];
       r=r[p.length];
+      
       if(!r)
       {
+          console.log("heee2");
         throw new JsonNotFoundException();
       }
       

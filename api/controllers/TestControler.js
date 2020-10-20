@@ -11,7 +11,8 @@ cors,
 Exception, 
 HtmlException,
 JsonRequest,
-JsonResponse
+JsonResponse,
+ImageResponse
 `);
 
 
@@ -39,7 +40,15 @@ routes.set("GET", cors.web,  "/test/${num}/", JsonRequest, JsonResponse, async f
   
 });
 
-
+routes.set("GET", cors.web,  "/testimg/${msg}", JsonRequest, ImageResponse, async function(req,res, args)
+{
+  
+  return res.badrequest("api/Responses/test.jpg");
+    
+  
+   //return res.badrequest("api/Responses/test.jpg");
+  
+});
 
 
 })();
