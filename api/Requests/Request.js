@@ -5,58 +5,21 @@
 
 (function()
 {
-  /*
-  var request= function(req)
+  
+  class Range
   {
-    
-    return {
-      req:req,
-      
-        
-        toJson:async function(callback)
-        {
-            
-            var retval= new Promise(function(done, err)
-            {
-            
-              var body = '';
-              req.on('data', function (data) 
-              {
-                body += data;
-                if (body.length > 1e8) 
-                { 
-                  request.connection.destroy();
-                }
-              });
-              req.on('end', function () 
-              {
-                //callback(JSON.parse(body));
-              
-                done(JSON.parse(body));
-              
-              });
-           
-            
-            });//end promise
-            
-            return retval;
-        }
-        
-        
-        
-        
-      
-      
-    };
+    start;
+    end;
+    size;
+    chunkData;
   };
-*/
-
-  class JsonRequest
+  
+  class Request
   {
-    #req;
+    request;
     constructor(req)
     {
-      this.#req=req;
+      this.request=req;
     }
     async body()
     {
@@ -65,17 +28,17 @@
       var retval= new Promise(function(done, err)
       {
         var body = '';
-        self.#req.on('data', function (data) 
+        self.request.on('data', function (data) 
         {
           body += data;
           if (body.length > 1e8) 
           { 
-            this.#req.connection.destroy();
+            this.request.connection.destroy();
           }
         });
-         self.#req.on('end', function () 
+         self.request.on('end', function () 
          {
-           done(JSON.parse(body));
+           done(body);
          });
            
             
@@ -84,20 +47,29 @@
       return retval;
     }
     
-    istype()
+    getRange()
     {
-      //console.log(this.#req.headers);
+      var range= req.headers.range;
+      if(!range) return undefined;
+      var parts = range.replace(/bytes=/, "").split("-")
+      var start = parseInt(parts[0], 10);
+      var end = parts[1] ? parseInt(parts[1], 10): fileSize-1;
+      var chunksize = (end-start)+1;
       
-      if(!this.#req.headers['content-type'].startsWith('application/json'))
-        {
-          return false;
-        }
-          return true;
+      
+      var range = new Range();
+      range.start=start;
+      
+      range.end=end;
+      range.size=chunksize;
+      
+      return range;
     }
+    
     
     
   };
 
-$fac.set("JsonRequest", JsonRequest);
+$fac.set("Request", Request);
 
 })();

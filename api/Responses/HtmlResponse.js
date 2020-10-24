@@ -5,28 +5,15 @@
 
 (function()
 {
-  $fac.inject(this,"header");
+  $fac.inject(this,"Response");
   
   
-  class HtmlResponse
+  class HtmlResponse extends Response
   {
-    #res;
-    #head;
     constructor(res)
     {
-      this.#res=res;
-      this.#head=new header();
-      this.#head.list={'Content-Type': 'text/html'};
-    }
-    setHeader(v)
-    {
-      this.#head.list=v;
-    }
-    send(code,obj)
-    {
-      this.#res.writeHead(code, this.#head.list);
-      this.#res.write(obj);
-      this.#res.end();
+      super(res);
+      this.head['Content-Type'] = 'text/html';
     }
     ok(obj)
     {

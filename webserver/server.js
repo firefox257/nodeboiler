@@ -34,10 +34,10 @@ http.createServer(function (req, res)
         
         if (range) 
         {
-          var parts = range.replace(/bytes=/, "").split("-")
-          var start = parseInt(parts[0], 10);
-          var end = parts[1] ? parseInt(parts[1], 10): fileSize-1;
-          var chunksize = (end-start)+1;
+        var parts = range.replace(/bytes=/, "").split("-")
+        var start = parseInt(parts[0], 10);
+        var end = parts[1] ? parseInt(parts[1], 10): fileSize-1;
+        var chunksize = (end-start)+1;
           var file = fs.createReadStream(url, {start, end})
           var head = {
             'Content-Range': `bytes ${start}-${end}/${fileSize}`,

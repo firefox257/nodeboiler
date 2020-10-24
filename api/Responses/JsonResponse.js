@@ -5,28 +5,24 @@
 
 (function()
 {
-  $fac.inject(this,"header");
+  $fac.inject(this,"Response");
   
   
-  class JsonResponse
+  class JsonResponse extends Response
   {
-    #res;
-    #head;
     constructor(res)
     {
-      this.#res=res;
-      this.#head=new header();
-      this.#head.list={'Content-Type': 'application/json'};
-    }
-    setHeader(v)
-    {
-      this.#head.list=v;
+      super(res);
+      this.head['Content-Type']='application/json';
+      
+      
     }
     send(code,obj)
     {
-      this.#res.writeHead(code, this.#head.list);
-      this.#res.write(JSON.stringify(obj));
-      this.#res.end();
+      
+      this.response.writeHead(code, this.head);
+      this.response.write(JSON.stringify(obj));
+      this.response.end();
     }
     ok(obj)
     {

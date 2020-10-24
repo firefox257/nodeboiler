@@ -3,9 +3,11 @@
 
 include("Cors.js");
 include("Header.js");
+
+include("Requests/Request.js");
 include("Requests/JsonRequest.js");
 
-
+include("Responses/Response.js");
 include("Responses/FileResponse.js");
 include("Responses/TextResponse.js");
 include("Responses/ImageResponse.js");

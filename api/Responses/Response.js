@@ -5,28 +5,45 @@
 
 (function()
 {
-  $fac.inject(this,"header");
   
-  
-  class JsonResponse
+  class Response
   {
-    #res;
-    #head;
+    response;
+    head;
     constructor(res)
     {
-      this.#res=res;
-      this.#head=new header();
-      this.#head.list={'Content-Type': 'application/json'};
+      this.response=res;
+      this.head={
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, PATCH, DELETE",
+        "Access-Control-Max-Age": 2592000, // 30 days
+        "Access-Control-Allow-Headers":"Origin, X-Requested-With, Content-Type, Accept, Authorization"
+      };
+        
+      this.head['Content-Type'] = 'text/plain';
     }
     setHeader(v)
     {
-      this.#head.list=v;
+      for(var i in v)
+      {
+        
+        this.head[i]=v[i];
+      }
+    }
+    getHeader()
+    {
+      var h={}
+      for(var i in this.head)
+      {
+        h[i]=this.head[i];
+      }
+      return h;
     }
     send(code,obj)
     {
-      this.#res.writeHead(code, this.#head.list);
-      this.#res.write(JSON.stringify(obj));
-      this.#res.end();
+      this.response.writeHead(code, this.head);
+      this.response.write(obj);
+      this.response.end();
     }
     ok(obj)
     {
@@ -34,144 +51,29 @@
     }
     badrequest(msg)
     {
-        this.send(400,{code:400,msg:msg ? msg : "Bad Request"});
+        this.send(400,msg ? msg : "Bad Request");
     }
     unauthorized(msg)
     {
-        this.send(401,{code:401,msg:msg ? msg : "Unauthorized"});
+        this.send(401,msg ? msg : "Unauthorized");
     }
     forbidden(msg)
     {
-        this.send(403,{code:403,msg:msg ? msg : "Forbidden"});
+        this.send(403,msg ? msg : "Forbidden");
     }
     notfound(msg)
     {
-        this.send(404,{code:404,msg:msg ? msg : "Not Found"});
+        this.send(404,msg ? msg : "Not Found");
     }
     error(msg)
     {
-        this.send(500,{code:500,msg:msg ? msg : "Server Error"});
+        this.send(500,msg ? msg : "Server Error");
     }
     
-  };
-  
-  
-  /*
-  
-  var response= function(res)
-  {
-    
-    
-  return {
-    res:res,
-    json:{
-      send:function(ex)
-      {
-        makeResponse(res,ex.code,
-        {'Content-Type': 'application/json'},
-        JSON.stringify(ex)
-        );
-      },
-      ok:function(obj)
-      {
-        makeResponse(res, 200,
-        {'Content-Type': 'application/json'},
-        JSON.stringify(obj)
-        );
-      },
-        badrequest:function(msg)
-      {
-        makeResponse(res, 400,
-        {'Content-Type': 'application/json'},
-        jsonmsg(400,msg ? msg : "Bad Request")
-        ); 
-      },
-     unauthorized:function(msg)
-      {
-        makeResponse(res, 401,
-        {'Content-Type': 'application/json'},
-        jsonmsg(401,msg?msg:"Unauthorized")
-        );
-      },
-      forbidden:function(msg)
-      {
-        makeResponse(res, 403,
-        {'Content-Type': 'application/json'},
-        jsonmsg(403,msg?msg:"Forbidden")
-        );
-      },
-      notfound:function(msg)
-      {
-        makeResponse(res, 404,
-        {'Content-Type': 'application/json'},
-        jsonmsg(404,msg?msg:"Not Found")
-        );
-      },
-      error:function(msg)
-      {
-        makeResponse(res, 500,
-        {'Content-Type': 'application/json'},
-        
-        jsonmsg(500,msg?msg:"Server Error")
-        );
-      }
-      
-      
-    },
-    txt:{
-      
-      ok:function(obj)
-      {
-        makeResponse(res, 200,
-        {'Content-Type': 'text/plain'},
-        obj
-        );
-      },
-      badrequest:function(msg)
-      {
-        makeResponse(res, 400,
-        {'Content-Type': 'text/plain'},
-        msg ? msg : "Bad Request"
-        ); 
-      },
-     unauthorized:function(msg)
-      {
-        makeResponse(res, 401,
-        {'Content-Type': 'text/plain'},
-        msg?msg:"Unauthorized"
-        );
-      },
-      forbidden:function(msg)
-      {
-        makeResponse(res, 403,
-        {'Content-Type': 'text/plain'},
-        msg?msg:"Forbidden"
-        );
-      },
-      notfound:function(msg)
-      {
-        makeResponse(res, 404,
-        {'Content-Type': 'text/plain'},
-        msg?msg:"Not Found"
-        );
-      },
-      error:function(msg)
-      {
-        makeResponse(res, 500,
-        {'Content-Type': 'text/plain'},
-        msg?msg:"Server Error"
-        );
-      }
-      
-      
-    },
     
   };
   
-  
-  }
-  //*/
 
-$fac.set("JsonResponse", JsonResponse);
+$fac.set("Response", Response);
 
 })();

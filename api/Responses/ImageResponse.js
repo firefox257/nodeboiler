@@ -8,24 +8,18 @@ var mime = require('mime-types');
 {
   $fac.inject(this,`
   header,
-  FileResponse
+  FileResponse,
+  Response
   
   `);
   
   
-  class ImageResponse
+  class ImageResponse extends Response
   {
-    #res;
-    #head;
     constructor(res)
     {
-      this.#res=res;
-      this.#head=new header();
+      super(res);
       
-    }
-    setHeader(v)
-    {
-      this.#head.list=v;
     }
     send(code,path, altmessage)
     {
@@ -38,12 +32,12 @@ var mime = require('mime-types');
           
           var stat =fs.statSync(path);
           
-          
-          this.#head.list={
-            'Content-Type': mime.lookup(path),
-            'Content-Length': stat.size};
-          this.#res.writeHead(200, this.#head.list);
-          fs.createReadStream(path).pipe(this.#res);
+          this.head['Content-Type']= mime.lookup(path);
+          this.head['Content-Length']=stat.size;
+            
+            
+            this.response.writeHead(code, this.head);
+          fs.createReadStream(path).pipe(this.response);
       
           return;
         }
@@ -56,10 +50,10 @@ var mime = require('mime-types');
       
       
       
-      this.#head.list={"Content-type": mime.lookup(".svg")};
+      this.head["Content-type"]= mime.lookup(".svg");
       
-      this.#res.writeHead(code, this.#head.list);
-      this.#res.write(`<svg 
+      this.response.writeHead(code, this.head);
+      this.response.write(`<svg 
    xmlns="http://www.w3.org/2000/svg"   
    width="400"
    height="40"
@@ -70,7 +64,7 @@ var mime = require('mime-types');
   <text x="0" y="30" class="heavy">${altmessage?altmessage:"Something went wrong"}</text>
 </svg>
       `);
-      this.#res.end();
+      this.response.end();
       
     }
     ok(path)

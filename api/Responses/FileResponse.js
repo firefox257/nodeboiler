@@ -5,43 +5,78 @@ var mime =require("mime-types");
 
 (function()
 {
-  $fac.inject(this,"header");
+  $fac.inject(this,"Response");
   $fac.inject(this,"NotFoundException");
-  class FileResponse
+  class FileResponse extends Response
   {
-    #res;
-    #head;
     constructor(res)
     {
-      this.#res=res;
-      this.#head=new header();
-      this.#head.list={'Content-Type': 'application/json'};
+      super(res);
+      this.head['Content-Type'] = 'application/json';
     }
-    setHeader(v)
-    {
-      this.#head.list=v;
-    }
-    send(code,path)
+    
+    send(code, path, alternatemsg)
     {
       
+      if(path)
+      {
+        
+        try
+        {
+          
+          var stat =fs.statSync(path);
+          
+          this.head['Content-Type']= mime.lookup(path);
+          this.head['Content-Length']=stat.size;
+            
+            
+          this.response.writeHead(code, this.head);
+          fs.createReadStream(path).pipe(this.response);
+      
+          return;
+        }
+        catch(ex)
+        {
+          //do nothing let fall through
+        }
+        
+      }
       
       
-      var stat=fs.statSync(path);
-      //console.log(stat);
       
+      this.head["Content-type"]= mime.lookup(".txt");
       
-      var h={
-             'Content-Length': stat.size,
-             'Content-Type': mime.lookup(path)
-          };
-      console.log(h);
-      this.#res.writeHead(200, h);
-      fs.createReadStream(path).pipe(this.#res);
-      
-      this.#res.end();
-      
+      this.response.writeHead(code, this.head);
+      this.response.write(alternatemsg);
+      this.response.end();
       
     }
+    
+    ok(path)
+    {
+      this.send(200, path, "Ok");
+    }
+    badrequest(path)
+    {
+        this.send(400,path, "Bad Request");
+    }
+    unauthorized(path)
+    {
+        this.send(401, path, "Unauthorized");
+    }
+    forbidden(path)
+    {
+        this.send(403, path, "Forbidden");
+    }
+    notfound(path)
+    {
+        this.send(404, path, "Not Found");
+    }
+    error(path)
+    {
+        this.send(500, path, "Error");
+    }
+    
     
     
   };

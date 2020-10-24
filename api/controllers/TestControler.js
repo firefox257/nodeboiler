@@ -20,7 +20,8 @@ ImageResponse
 
 routes.set("POST",cors.web,  "/test/", JsonRequest, JsonResponse, async function(req,res)
 {
-  retval= await req.body();
+  var retval= await req.body();
+  
   res.ok({got:retval})
   
 });
@@ -43,7 +44,7 @@ routes.set("GET", cors.web,  "/test/${num}/", JsonRequest, JsonResponse, async f
 routes.set("GET", cors.web,  "/testimg/${msg}", JsonRequest, ImageResponse, async function(req,res, args)
 {
   
-  return res.ok("api/Responses/test.jpg");
+  return res.ok(`api/Resources/${args.msg}`);
     
   
    //return res.badrequest("api/Responses/test.jpg");

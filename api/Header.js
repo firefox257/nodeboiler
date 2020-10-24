@@ -17,11 +17,11 @@ class header
     
     
   }
-  get list()
+  getHeader()
   {
     return this.#list;
   }
-  set list(v)
+  setHeader(v)
   {
     
     for(var i in v)

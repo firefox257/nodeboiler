@@ -38,8 +38,6 @@ var routes=(function()
          name=i.substring(2, i.length-1);
          i="__all";
          
-         
-         
        }
        if(!r[i])
        {
@@ -63,7 +61,7 @@ var routes=(function()
       
       var method=req.method;
       
-        //console.log(method+ " sending "+path);
+      //console.log(method+ " sending "+path);
       
       var p=path.split("/").map(w=>w.trim());
       p=p.filter(w=>w!=="");
@@ -79,7 +77,6 @@ var routes=(function()
       
       if(!r)
       {
-          console.log("heee2");
         throw new JsonNotFoundException();
       }
       
@@ -126,13 +123,6 @@ var routes=(function()
       var reqt =new r['__reqtype'](req);
       var rest =new r['__restype'](res);
       
-      
-      /*if(!reqt.istype())
-      {
-        
-        rest.badrequest();
-        return;
-      }*/
       rest.setHeader(r['__cors']);
       
       
