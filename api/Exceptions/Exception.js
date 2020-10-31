@@ -18,9 +18,8 @@
 {
   constructor(message, error)
   {
-    this.code=400;
-    this.messgae= message? message: "Bad Request";
-    this.error=error;
+    super(400, message? message: "Bad Request", error);
+    
   }
 };
 
@@ -28,9 +27,9 @@ class UnauthorizedException extends Exception
 {
   constructor(msg, error)
   {
-    this.code=401;
-    this.message= message? message: "Unauthorized";
-    this.error=error;
+    super(401, message? message: "Unauthorized", error);
+    
+    
   }
 };
 
@@ -38,10 +37,10 @@ class ForbiddenException extends Exception
 {
   constructor(message, error)
   {
-    this.code=403;
-    this.message= message? message: "Forbidden";
-    this.error=error;
-    th
+    
+    super(403, message? message: "Forbidden", error);
+    
+    
   }
 };
 
@@ -49,9 +48,9 @@ class NotFoundException extends Exception
 {
   constructor(message, error)
   {
-    this.code=404;
-    this.message= message? message: "Not Found";
-    this.error=error;
+    
+    super(404, message? message: "Not Found", error);
+    
   }
 };
 
@@ -59,9 +58,8 @@ class ErrorException extends Exception
 {
   constructor(message, error)
   {
-    this.code=500;
-    this.message= message? message: "Error";
-    this.error=error;
+    super(500, message? message: "Error", error);
+    
   }
 };
 
@@ -69,9 +67,8 @@ class NotImplementedException extends Exception
 {
   constructor(message, error)
   {
-    this.code=501;
-    this.message= message? message: "Not Implemented";
-    this.error=error;
+    super(501, message? message: "Not Implemented", error);
+    
   }
 };
 

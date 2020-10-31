@@ -35,6 +35,17 @@ function server(basedir)
   };
   vm.createContext(context);
   
+  /*function include(filename)
+  {
+      context.currentfile=basedir+filename;
+      vm.runInContext(`${fs.readFileSync(basedir+filename,'utf8')}`,context,{filename:basedir+filename, lineOffset:0});
+    
+  }*/
+  //context.include=include;
+  /*context.$fac=$fac;
+  context.console=console;
+  context.require=require;*/
+  
   var ret={
     include: function(filename)
     {

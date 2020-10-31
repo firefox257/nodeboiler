@@ -54,13 +54,10 @@ http.createServer(function (req, res)
     return;
     */
     
-    
     routes.send(req, res, url)
     .catch(function(ex)
     {
       ExceptionHandler(res,ex);
     });
-    
-    
     
 }).listen(config.port);

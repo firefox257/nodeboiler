@@ -3,7 +3,6 @@ var fs =require("fs");
 var mime = require('mime-types');
 
 
-
 (function()
 {
   $fac.inject(this,`
@@ -16,14 +15,15 @@ var mime = require('mime-types');
   
   class ImageResponse extends Response
   {
+    type;
     constructor(res)
     {
       super(res);
-      
+      this.type=".svg";
     }
-    send(code,path, altmessage)
+    send(code,stream, altmessage)
     {
-      
+      /*
       if(path)
       {
         
@@ -38,6 +38,8 @@ var mime = require('mime-types');
             
             this.response.writeHead(code, this.head);
           fs.createReadStream(path).pipe(this.response);
+          
+          
       
           return;
         }
@@ -48,7 +50,20 @@ var mime = require('mime-types');
         
       }
       
+      */
       
+      
+      if(stream)
+      {
+        this.head["Content-type"]= mime.lookup(stream.type);
+        
+        this.head["Content-Length"]= stream.size;
+      
+        this.response.writeHead(code, this.head);
+        
+        stream.stream.pipe(this.response);
+        return;
+      }
       
       this.head["Content-type"]= mime.lookup(".svg");
       
@@ -67,29 +82,29 @@ var mime = require('mime-types');
       this.response.end();
       
     }
-    ok(path)
+    ok(stream)
     {
-      this.send(200, path, "Ok");
+      this.send(200, stream, "Ok");
     }
-    badrequest(path)
+    badrequest(stream)
     {
-        this.send(400,path, "Bad Request");
+        this.send(400,stream, "Bad Request");
     }
-    unauthorized(path)
+    unauthorized(stream)
     {
-        this.send(401, path, "Unauthorized");
+        this.send(401, stream, "Unauthorized");
     }
-    forbidden(path)
+    forbidden(stream)
     {
-        this.send(403, path, "Forbidden");
+        this.send(403, stream, "Forbidden");
     }
-    notfound(path)
+    notfound(stream)
     {
-        this.send(404, path, "Not Found");
+        this.send(404, stream, "Not Found");
     }
-    error(path)
+    error(stream)
     {
-        this.send(500, path, "Error");
+        this.send(500, stream, "Error");
     }
     
   };

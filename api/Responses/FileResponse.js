@@ -15,7 +15,7 @@ var mime =require("mime-types");
       this.head['Content-Type'] = 'application/json';
     }
     
-    send(code, path, alternatemsg)
+    send(code, path, alternatemsg, range)
     {
       
       if(path)
@@ -25,14 +25,34 @@ var mime =require("mime-types");
         {
           
           var stat =fs.statSync(path);
-          
+            
           this.head['Content-Type']= mime.lookup(path);
           this.head['Content-Length']=stat.size;
+          
+          if(!range)
+          {
             
             
-          this.response.writeHead(code, this.head);
-          fs.createReadStream(path).pipe(this.response);
-      
+            var stat =fs.statSync(path);
+            
+            this.response.writeHead(code, this.head);
+            fs.createReadStream(path).pipe(this.response);
+          }
+          else
+          {
+            
+            
+            
+            
+            var file = fs.createReadStream(path, {start: range.start, end: range.end});
+            
+            this.head['Content-Range']=`bytes ${range.start}-${range.end}/${stat.size}`;
+            this.head['Accept-Ranges']= 'bytes';
+            this.head['Content-Length']=range.size;
+            
+            this.response.writeHead(206, this.head);
+            file.pipe(this.response);
+          }
           return;
         }
         catch(ex)
@@ -52,29 +72,29 @@ var mime =require("mime-types");
       
     }
     
-    ok(path)
+    ok(path, range)
     {
-      this.send(200, path, "Ok");
+      this.send(200, path, "Ok", range);
     }
-    badrequest(path)
+    badrequest(path, range)
     {
-        this.send(400,path, "Bad Request");
+        this.send(400,path, "Bad Request", range);
     }
-    unauthorized(path)
+    unauthorized(path, range)
     {
-        this.send(401, path, "Unauthorized");
+        this.send(401, path, "Unauthorized", range);
     }
-    forbidden(path)
+    forbidden(path, range)
     {
-        this.send(403, path, "Forbidden");
+        this.send(403, path, "Forbidden", range);
     }
-    notfound(path)
+    notfound(path, range)
     {
-        this.send(404, path, "Not Found");
+        this.send(404, path, "Not Found", range);
     }
-    error(path)
+    error(path, range)
     {
-        this.send(500, path, "Error");
+        this.send(500, path, "Error", range);
     }
     
     

@@ -10,9 +10,13 @@ $fac.inject(this,`routes,
 cors,
 Exception, 
 HtmlException,
+NotFoundException,
+Request,
 JsonRequest,
 JsonResponse,
-ImageResponse
+ImageResponse,
+FileResponse,
+TestImageService
 `);
 
 
@@ -43,13 +47,41 @@ routes.set("GET", cors.web,  "/test/${num}/", JsonRequest, JsonResponse, async f
 
 routes.set("GET", cors.web,  "/testimg/${msg}", JsonRequest, ImageResponse, async function(req,res, args)
 {
-  
-  return res.ok(`api/Resources/${args.msg}`);
+  try
+  {
+    var s=  await TestImageService.get(args.msg);
     
+    res.ok(s);
+  }
+  catch(ex)
+  {
+    if(ex instanceof NotFoundException)
+    {
+      res.notfound();
+    }
+    else
+    {
+      res.error();
+      throw ex;
+    }
+  }
   
-   //return res.badrequest("api/Responses/test.jpg");
+  
+  
+  
   
 });
+
+
+
+routes.set("GET", cors.web,  "/testvideo/", Request, FileResponse, async function(req,res, args)
+{
+  var range = req.getRange();
+  res.ok("api/Resources/test.mp4", range);
+});
+
+
+
 
 
 })();

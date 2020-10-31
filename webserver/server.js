@@ -6,17 +6,32 @@ var mime = require('mime-types');
 $fac.inject(this, `config`);
 
 
+var head = {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, PATCH, DELETE",
+        "Access-Control-Max-Age": 2592000, // 30 days
+        "Access-Control-Allow-Headers":"Origin, X-Requested-With, Content-Type, Accept, Authorization"
+      };
+
 http.createServer(function (req, res) 
 {
+  
+  
+  if (req.method === "OPTIONS") {
+    res.writeHead(204, head);
+    res.end();
+    return;
+  }
+  
   var url =   decodeURI(req.url.toString());
     if(url.endsWith("/"))url+="index.html";
     url=config.dir+url;
     
     //console.log(url);
     
-    fs.stat(url, function(err, stat)
-    {
-      if(err)
+      fs.stat(url, function(err, stat)
+      {
+        if(err)
       {
           var head = {
              'Content-Type': mime.lookup(".txt")

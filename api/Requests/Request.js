@@ -49,7 +49,7 @@
     
     getRange()
     {
-      var range= req.headers.range;
+      var range= this.request.headers.range;
       if(!range) return undefined;
       var parts = range.replace(/bytes=/, "").split("-")
       var start = parseInt(parts[0], 10);

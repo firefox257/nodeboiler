@@ -17,7 +17,7 @@
     
   function ExceptionHandler(res, ex)
   {
-    
+    console.log("here");
     if(ex instanceof JsonException)
     {
       new JsonResponse(res).send(ex.code, {code:ex.code,msg:ex.message});
@@ -28,6 +28,7 @@
     }
     else
     {
+      console.log("bla");
       console.log(ex);
     }
     

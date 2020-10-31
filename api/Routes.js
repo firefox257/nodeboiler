@@ -126,7 +126,14 @@ var routes=(function()
       rest.setHeader(r['__cors']);
       
       
+      
+      
+      
+      
       await r['__func'](reqt, rest, args);
+      
+      
+      
           
     }
     

@@ -3,6 +3,7 @@
 
 include("Cors.js");
 include("Header.js");
+  include("TypeReadable.js");
 
 include("Requests/Request.js");
 include("Requests/JsonRequest.js");
@@ -27,4 +28,4 @@ include("ExceptionFiltering.js")
 include("Routes.js");
 include("RegisterRoutes.js");
 
- 
+include("Services/TestImageService.js");
